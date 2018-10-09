@@ -22,3 +22,11 @@ For example:
 sudo cp usfm.lang /usr/share/gtksourceview-2.0/language-specs/
 
 Then gtksourceview can find the language definition.
+
+# Usage
+
+A simple example is provided in this repository:
+./pyusfmview.pl eph.usfm
+
+And a more complicated example:
+./pyusfmview.pl rev.usfm
