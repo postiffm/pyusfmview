@@ -26,7 +26,9 @@ Then gtksourceview can find the language definition.
 # Usage
 
 A simple example is provided in this repository:
+
     ./pyusfmview.pl eph.usfm
 
 And a more complicated example:
+
     ./pyusfmview.pl rev.usfm
