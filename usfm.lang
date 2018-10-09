@@ -3,6 +3,7 @@
 <!-- 
 USFM 3.0 language definition file for gtksourceview[2,3,4]
 Revision: 1.0
+USFM is the unified scripture format markup language for the Bible.
 (C) 2018 Matt Postiff
 On the format of this file, see https://developer.gnome.org/gtksourceview/unstable/lang-tutorial.html 
 On the USFM language, see http://ubs-icap.org/chm/usfm/3.0/
@@ -95,7 +96,6 @@ On the USFM language, see http://ubs-icap.org/chm/usfm/3.0/
           <keyword>v\s+[0-9]*</keyword>
           <keyword>p</keyword>
           <keyword>c\s+[0-9]*</keyword>
-          
           <keyword>m</keyword>
           <keyword>q1</keyword>
           <keyword>b</keyword>

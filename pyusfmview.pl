@@ -49,6 +49,8 @@
 # 1. Get language configuration right
 # 2. Add file name to title bar
 # 3. Add search capability
+# 4. Contribute usfm.lang to gtksourceview
+# 5. Port to gtksourceview3
 
 import os, os.path
 import sys
