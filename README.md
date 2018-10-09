@@ -5,7 +5,7 @@ This is a simple USFM viewer implemented with Python and gtksourceview.
 Use it to look at USFM files and see the syntactical elements
 highlighted.
 
-# Installing
+# Installing on Ubuntu
 
 I developed this in Ubuntu 18.04 LTS. I had to do the following to
 get pyusfmview to function:
@@ -22,6 +22,16 @@ For example:
     sudo cp usfm.lang /usr/share/gtksourceview-2.0/language-specs/
 
 Then gtksourceview can find the language definition.
+
+# Installing on msys2 (64-bit)
+
+This is a partial list of things to do:
+
+    pacman -S mingw-w64-x86_64-python2-pip
+    python -m pip install --upgrade pip
+    pip install pygtk
+
+However, the above fails.
 
 # Usage
 
