@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+USFM 3.0 language definition file for gtksourceview[2,3,4]
+Revision: 1.0
+(C) 2018 Matt Postiff
+On the format of this file, see https://developer.gnome.org/gtksourceview/unstable/lang-tutorial.html 
+On the USFM language, see http://ubs-icap.org/chm/usfm/3.0/
+-->
+
+<language id="usfm" name="USFM" version="2.0" _section="Source">
+  <metadata>
+    <property name="mimetypes">text/usfm</property>
+    <property name="globs">*.usfm;*.USFM;*.sfm;*.SFM</property>
+  </metadata>
+  <styles>
+    <style id="comment" name="Comment" map-to="def:comment"/>
+    <style id="string" name="String" map-to="def:string"/>
+    <style id="escaped-character" name="Escaped Character" map-to="def:special-char"/>
+    <style id="preprocessor" name="Preprocessor" map-to="def:preprocessor"/>
+    <style id="included-file" name="Included File" map-to="def:string"/>
+    <style id="char" name="Character" map-to="def:character"/>
+    <style id="keyword" name="Keyword" map-to="def:keyword"/>
+    <style id="type" name="Data Type" map-to="def:type"/>
+  </styles>
+  <definitions>
+    <context id="usfm">
+      <include>
+
+        <context id="identification-markers" style-ref="keyword">
+          <!-- All of these are paragraph type -->
+          <prefix>\\</prefix>
+          <keyword>id</keyword>
+          <keyword>usfm</keyword>
+          <keyword>ide</keyword>
+          <keyword>sts</keyword>
+          <keyword>rem</keyword>
+          <keyword>h</keyword>
+          <keyword>toc[0-9]*</keyword>
+          <keyword>toca[0-9]*</keyword>
+        </context>
+        
+        <context id="introduction-paragraph-markers" style-ref="keyword">
+          <prefix>\\</prefix>
+          <keyword>imt[0-9]*</keyword>
+          <keyword>is[0-9]*</keyword>
+          <keyword>ipi</keyword>
+          <keyword>ip</keyword>
+          <keyword>imi</keyword>
+          <keyword>im</keyword>
+          <keyword>ipq</keyword>
+          <keyword>imq</keyword>
+          <keyword>ipr</keyword>
+          <keyword>iq[0-9]*</keyword>
+          <keyword>ib</keyword>
+          <keyword>ili[0-9]*</keyword>
+          <keyword>iot</keyword>
+          <keyword>io[0-9]*</keyword>
+          <keyword>iex</keyword>
+          <keyword>imte[0-9]*</keyword>
+          <keyword>ie</keyword>
+        </context>
+
+        <context id="introduction-character-marker-ior" style-ref="comment">
+          <start>\\ior</start>
+          <end>\\ior\*</end>
+        </context>
+
+        <context id="introduction-character-marker-iqt" style-ref="comment">
+          <start>\\iqt</start>
+          <end>\\iqt\*</end>
+        </context>
+        
+        <context id="titles-headings-labels-paragraph-markers" style-ref="keyword">
+          <prefix>\\</prefix>
+          <keyword>mte[0-9]*</keyword>
+          <keyword>mt[0-9]*</keyword>
+          <keyword>ms[0-9]*</keyword>
+          <keyword>mr</keyword>
+          <keyword>s[0-9]*</keyword>
+          <keyword>sr</keyword>
+          <keyword>sp</keyword>
+          <keyword>r</keyword>
+          <keyword>d</keyword>
+          <keyword>sd[0-9]*</keyword>
+        </context>
+        
+        <context id="titles-headings-labels-character-marker-rq" style-ref="comment">
+          <start>\\rq</start>
+          <end>\\rq\*</end>
+        </context>
+
+        <context id="other-markers-for-now" style-ref="keyword">
+          <prefix>\\</prefix>
+          <keyword>v\s+[0-9]*</keyword>
+          <keyword>p</keyword>
+          <keyword>c\s+[0-9]*</keyword>
+          
+          <keyword>m</keyword>
+          <keyword>q1</keyword>
+          <keyword>b</keyword>
+          <keyword>/+/</keyword>
+        </context>
+        
+        <context id="add-marker" style-ref="comment">
+          <start>\\add</start>
+          <end>\\add\*</end>
+        </context>
+
+      </include>
+    </context>
+  </definitions>
+</language>
