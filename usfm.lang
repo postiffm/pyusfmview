@@ -7,6 +7,10 @@ USFM is the unified scripture format markup language for the Bible.
 (C) 2018 Matt Postiff
 On the format of this file, see https://developer.gnome.org/gtksourceview/unstable/lang-tutorial.html 
 On the USFM language, see http://ubs-icap.org/chm/usfm/3.0/
+
+TO DO:
+See if I should add \s explicitly after many keywords to help disambiguate them.
+
 -->
 
 <language id="usfm" name="USFM" version="2.0" _section="Source">
@@ -91,23 +95,260 @@ On the USFM language, see http://ubs-icap.org/chm/usfm/3.0/
           <end>\\rq\*</end>
         </context>
 
-        <context id="other-markers-for-now" style-ref="keyword">
+        <context id="chapters-verses-paragraph-markers" style-ref="keyword">
           <prefix>\\</prefix>
-          <keyword>v\s+[0-9]*</keyword>
-          <keyword>p</keyword>
           <keyword>c\s+[0-9]*</keyword>
-          <keyword>m</keyword>
-          <keyword>q1</keyword>
-          <keyword>b</keyword>
-          <keyword>/+/</keyword>
+          <keyword>cl</keyword>
+          <keyword>cp</keyword>
+          <keyword>cd</keyword>
+          <keyword>v\s+[0-9]*</keyword>
         </context>
         
-        <context id="add-marker" style-ref="comment">
+        <context id="chapters-verses-character-marker-ca" style-ref="comment">
+          <start>\\ca\s+[0-9]*</start>
+          <end>\\ca\*</end>
+        </context>
+        
+        <context id="chapters-verses-character-marker-va" style-ref="comment">
+          <start>\\va\s+[0-9]*</start>
+          <end>\\va\*</end>
+        </context>
+        
+        <context id="chapters-verses-character-marker-vp" style-ref="comment">
+          <start>\\vp</start>
+          <end>\\vp\*</end>
+        </context>
+
+        <context id="paragraphs" style-ref="keyword">
+          <prefix>\\</prefix>
+          <keyword>pmo</keyword>
+          <keyword>pmr</keyword>
+          <keyword>pmc</keyword>
+          <keyword>pc</keyword>
+          <keyword>po</keyword>
+          <keyword>pr</keyword>
+          <keyword>pm</keyword>
+          <keyword>p</keyword>
+          <keyword>mi</keyword>
+          <keyword>m</keyword>
+          <keyword>cls</keyword>
+          <keyword>pi\s+[0-9]*</keyword>
+          <keyword>ph\s+[0-9]*</keyword>
+          <keyword>b</keyword> <!-- also used in poetry contexts -->
+          <keyword>nb</keyword>
+        </context>
+ 
+        <context id="poetry-paragraph-markers" style-ref="keyword">
+          <prefix>\\</prefix>
+          <keyword>q\s+[0-9]*</keyword>
+          <keyword>qm\s+[0-9]*</keyword>
+          <keyword>qr</keyword>
+          <keyword>qc</keyword>
+          <keyword>qa</keyword>
+          <keyword>qd</keyword>
+        </context>
+        
+        <context id="poetry-character-marker-qs" style-ref="comment">
+          <start>\\qs</start>
+          <end>\\qs\*</end>
+        </context>
+        
+        <context id="poetry-character-marker-qac" style-ref="comment">
+          <start>\\qac</start>
+          <end>\\qac\*</end>
+        </context>
+
+        <context id="list-paragraph-markers" style-ref="keyword">
+          <prefix>\\</prefix>
+          <keyword>lh</keyword>
+          <keyword>lf</keyword>
+          <keyword>li\s+[0-9]*</keyword>
+          <keyword>lim\s+[0-9]*</keyword>
+        </context>
+        
+        <context id="list-character-marker-litl" style-ref="comment">
+          <start>\\litl</start>
+          <end>\\litl\*</end>
+        </context>
+        
+        <context id="list-character-marker-lik" style-ref="comment">
+          <start>\\lik</start>
+          <end>\\lik\*</end>
+        </context>
+
+        <context id="list-character-marker-liv" style-ref="comment">
+          <start>\\liv</start>
+          <end>\\liv\*</end>
+        </context>
+
+        <context id="table-paragraph-markers" style-ref="keyword">
+          <prefix>\\</prefix>
+          <keyword>tr</keyword>
+        </context>
+          
+        <context id="table-character-markers" style-ref="keyword">
+          <!-- Unfortunately, these are different than all other character markers so far...they have no \\keyword* end-marker -->
+          <prefix>\\</prefix>
+          <keyword>th\s+[0-9]*</keyword>
+          <keyword>thr\s+[0-9]*</keyword>
+          <keyword>tc\s+[0-9]*</keyword>
+          <keyword>tcr\s+[0-9]*</keyword>
+        </context>
+
+        <context id="footnote-element-f" style-ref="string">
+          <start>\\f</start>
+          <end>\\f\*</end>
+        </context>
+        
+        <context id="footnote-element-fe" style-ref="comment">
+          <start>\\fe</start>
+          <end>\\fe\*</end>
+        </context>
+        
+         <context id="footnote-character-markers" style-ref="keyword">
+          <prefix>\\</prefix>
+           <keyword>fr</keyword>
+           <keyword>fqa</keyword>
+           <keyword>fq</keyword>
+           <keyword>fk</keyword>
+           <keyword>fl</keyword>
+           <keyword>fw</keyword>
+           <keyword>fp</keyword>
+           <keyword>ft</keyword>
+        </context>
+        
+        <context id="footnote-character-marker-fv" style-ref="comment">
+          <start>\\fv</start>
+          <end>\\fv\*</end>
+        </context>
+        
+        <context id="footnote-character-marker-fdc" style-ref="comment">
+          <start>\\fdc</start>
+          <end>\\fdc\*</end>
+        </context>
+        
+        <context id="footnote-character-marker-fm" style-ref="comment">
+          <start>\\fm</start>
+          <end>\\fm\*</end>
+        </context>
+        
+        <context id="cross-reference-x" style-ref="comment">
+          <start>\\x</start>
+          <end>\\x\*</end>
+        </context>
+
+        <context id="cross-reference-character-markers" style-ref="comment">
+          <prefix>\\</prefix>
+          <keyword>xo</keyword>
+          <keyword>xk</keyword>
+          <keyword>xq</keyword>
+          <keyword>xt</keyword>
+          <keyword>xta</keyword>
+        </context>
+        
+        <context id="cross-reference-xop" style-ref="comment">
+          <start>\\xop</start>
+          <end>\\xop\*</end>
+        </context>
+        
+        <context id="cross-reference-xot" style-ref="comment">
+          <start>\\xot</start>
+          <end>\\xot\*</end>
+        </context>
+        
+        <context id="cross-reference-xnt" style-ref="comment">
+          <start>\\xnt</start>
+          <end>\\xnt\*</end>
+        </context>
+        
+        <context id="cross-reference-xdc" style-ref="comment">
+          <start>\\xdc</start>
+          <end>\\xdc\*</end>
+        </context>
+        
+        <context id="cross-reference-rq" style-ref="comment">
+          <start>\\rq</start>
+          <end>\\rq\*</end>
+        </context>
+        
+        <context id="special-text-character-marker-add" style-ref="comment">
           <start>\\add</start>
           <end>\\add\*</end>
         </context>
 
-      </include>
+        <context id="special-text-character-marker-bk" style-ref="comment">
+          <start>\\bk</start>
+          <end>\\bk\*</end>
+        </context>
+        
+        <context id="special-text-character-marker-dc" style-ref="comment">
+          <start>\\dc</start>
+          <end>\\dc\*</end>
+        </context>
+
+        <context id="special-text-character-marker-k" style-ref="comment">
+          <start>\\k</start>
+          <end>\\k\*</end>
+        </context>
+        
+        <context id="special-text-paragraph-marker-lit" style-ref="comment">
+          <prefix>\\</prefix>
+          <keyword>lit</keyword>
+        </context>
+        
+        <context id="special-text-character-marker-nd" style-ref="comment">
+          <start>\\nd</start>
+          <end>\\nd\*</end>
+        </context>
+        
+        <context id="special-text-character-marker-ord" style-ref="comment">
+          <start>\\ord</start>
+          <end>\\ord\*</end>
+        </context>
+        
+        <context id="special-text-character-marker-pn" style-ref="comment">
+          <start>\\pn</start>
+          <end>\\pn\*</end>
+        </context>
+
+        <context id="special-text-character-marker-png" style-ref="comment">
+          <start>\\png</start>
+          <end>\\png\*</end>
+        </context>
+           
+        <context id="special-text-character-marker-addpn" style-ref="comment">
+          <!-- Deprecated; use is discouraged -->
+          <start>\\addpn</start>
+          <end>\\addpn\*</end>
+        </context>
+
+        <context id="special-text-character-marker-qt" style-ref="comment">
+          <start>\\qt</start>
+          <end>\\qt\*</end>
+        </context>
+        
+        <context id="special-text-character-marker-sig" style-ref="comment">
+          <start>\\sig</start>
+          <end>\\sig\*</end>
+        </context>
+
+        <context id="special-text-character-marker-sls" style-ref="comment">
+          <start>\\sls</start>
+          <end>\\sls\*</end>
+        </context>
+
+        <context id="special-text-character-marker-tl" style-ref="comment">
+          <start>\\tl</start>
+          <end>\\tl\*</end>
+        </context>
+
+        <context id="special-text-character-marker-wj" style-ref="comment">
+          <start>\\wj</start>
+          <end>\\wj\*</end>
+        </context>
+
+        
+        </include>
     </context>
   </definitions>
 </language>
