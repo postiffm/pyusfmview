@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 # Originally had coding: UTF-8 with -*- on both sides, but that
 # causes emacs to be unhappy when saving the utf-8 format.
-# Adapted to work on Ubuntu 18.04 LTS from http://www.eurion.net/python-snippets/snippet/GtkSourceView%20Example.html
+#
+# Adapted to work on Ubuntu 18.04 LTS from
+# http://www.eurion.net/python-snippets/snippet/GtkSourceView%20Example.html
+# 
 # Copyright (C) 2018 - Matt Postiff
 #
 # [SNIPPET_NAME: GtkSourceView Example]
@@ -183,12 +186,24 @@ def fontsize_toggled_cb(action, action2, sourceview):
     if font_desc:
         sourceview.modify_font(font_desc)
 
+
 def new_view_cb(action, sourceview):
     window = create_view_window(sourceview.get_buffer(), sourceview)
     window.set_default_size(800, 500)
     window.show()
-    
 
+
+def help_about_cb(action, sourceview):
+    dialog = gtk.AboutDialog()
+    dialog.set_name("Python USFM Viewer")
+    dialog.set_authors("Matt Postiff")
+    dialog.set_copyright("(C) 2018 Matt Postiff")
+    dialog.set_version("1.0")
+    response = dialog.run()
+    dialog.hide()
+    dialog.destroy()
+
+    
 def print_cb(action, sourceview):
     window = sourceview.get_toplevel()
     buffer = sourceview.get_buffer()
@@ -302,10 +317,12 @@ buffer_actions = [
 view_actions = [
     ('FileMenu', None, '_File'),
     ('ViewMenu', None, '_View'),
+    ('HelpMenu', None, '_Help'),
     ('Print', gtk.STOCK_PRINT, '_Print', '<control>P', 'Print the file', print_cb),
     ('NewView', gtk.STOCK_NEW, '_New View', None, 'Create a new view of the file', new_view_cb),
+    ('HelpAbout', gtk.STOCK_ABOUT, '_About', None, 'Display the About dialog', help_about_cb),
     ('TabsWidth', None, '_Tabs Width'),
-    ('FontSize', None, '_Font Size')
+    ('FontSize', None, '_Font Size'),
 ]
 
 toggle_actions = [
@@ -359,7 +376,6 @@ view_ui_description = """
         <menuitem action='TabsWidth10'/>
         <menuitem action='TabsWidth12'/>
       </menu>
-      <separator/>
       <menu action='FontSize'>
         <menuitem action='FontSize8'/>
         <menuitem action='FontSize9'/>
@@ -369,6 +385,9 @@ view_ui_description = """
         <menuitem action='FontSize14'/>
         <menuitem action='FontSize16'/>
       </menu>
+    </menu>
+    <menu action='HelpMenu'>
+      <menuitem action='HelpAbout'/>
     </menu>
   </menubar>
 </ui>
@@ -385,6 +404,8 @@ buffer_ui_description = """
       <menuitem action='Quit'/>
     </menu>
     <menu action='ViewMenu'>
+    </menu>
+    <menu action='HelpMenu'>
     </menu>
   </menubar>
 </ui>
@@ -442,7 +463,7 @@ def create_view_window(buffer, sourceview=None):
     if font_desc:
         view.modify_font(font_desc)
 
-    # change view attributes to match those of sourceview
+    # change view attributes to match those of sourceview (only initially)
     if sourceview:
         action = action_group.get_action('ShowNumbers')
         action.set_active(sourceview.get_show_line_numbers())
