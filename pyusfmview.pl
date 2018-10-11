@@ -38,6 +38,7 @@
 # sudo apt install python-gtksourceview2
 # sudo apt install libgtksourceview2.0-doc
 # ?? pip install pygtk
+# 
 
 # To solve
 # glib.GError: Failed to open file '/usr/share/pixmaps/apple-green.png': No such file or directory
@@ -45,15 +46,21 @@
 # and rename that file to pixmaps/other/Apple-Green.png (same with red as well).
 # You might also find these icons in a package named like gnome-desktop-data 
 
+# To add python gtk development docs to your devhelp
+# sudo apt install python-gtk2-doc python-gtk2-dev
+
 # To solve lack of language highlighting,
 # sudo cp usfm.lang /usr/share/gtksourceview-2.0/language-specs/
 
 # To Do
-# 1. Get language configuration right
-# 2. Add file name to title bar
-# 3. Add search capability
-# 4. Contribute usfm.lang to gtksourceview
-# 5. Port to gtksourceview3
+#   1. Get language configuration right
+#   2. Add file name to title bar
+#   3. Add search capability
+#   4. Contribute usfm.lang to gtksourceview
+#   5. Port to gtksourceview3
+# X 6. Add About dialog
+#   7. Add F3 hotkey for search
+#   8. Add <enter> handler in Find dialog
 
 import os, os.path
 import sys
@@ -62,7 +69,8 @@ pygtk.require ('2.0')
 
 import gtk
 if gtk.pygtk_version < (2,10,0):
-    print "PyGtk 2.10 or later required for this example"
+    pyversion = '.'.join(str(i) for i in gtk.pygtk_version)
+    print "PyGtk 2.10 or later required. Installed version is " + pyversion
     raise SystemExit
 
 import gtksourceview2
@@ -75,6 +83,7 @@ windows = []    # this list contains all view windows
 MARK_CATEGORY_1 = 'one'
 MARK_CATEGORY_2 = 'two'
 DATADIR = '/usr/share'
+findtext = 'Text to find'
 
 
 ######################################################################
@@ -193,17 +202,6 @@ def new_view_cb(action, sourceview):
     window.show()
 
 
-def help_about_cb(action, sourceview):
-    dialog = gtk.AboutDialog()
-    dialog.set_name("Python USFM Viewer")
-    dialog.set_authors("Matt Postiff")
-    dialog.set_copyright("(C) 2018 Matt Postiff")
-    dialog.set_version("1.0")
-    response = dialog.run()
-    dialog.hide()
-    dialog.destroy()
-
-    
 def print_cb(action, sourceview):
     window = sourceview.get_toplevel()
     buffer = sourceview.get_buffer()
@@ -229,6 +227,54 @@ def print_cb(action, sourceview):
         print 'file printed: "%s"' % filename
 
 
+def help_about_cb(action, sourceview):
+    dialog = gtk.AboutDialog()
+    dialog.set_name("Python USFM Viewer")
+    dialog.set_authors("Matt Postiff")
+    dialog.set_copyright("(C) 2018 Matt Postiff")
+    dialog.set_version("1.0")
+    response = dialog.run()
+    dialog.destroy()
+
+
+def view_find_cb(action, sourceview):
+    global findtext
+    # I don't have a gtkWindow to be a parent here...
+    dialog = gtk.Dialog("Find Text", None,
+                        gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                        (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+                         gtk.STOCK_FIND,   gtk.RESPONSE_APPLY))
+
+    # Add the text box for search text, etc.
+    dialog.set_size_request(200, 100)
+    entry = gtk.Entry();
+    entry.set_text(findtext)
+    entry.set_editable(True)
+    entry.set_visibility(True)
+    entry.show()
+    entry.set_icon_from_icon_name(gtk.ENTRY_ICON_PRIMARY, gtk.STOCK_FIND)
+    dialog.vbox.pack_start(entry, True, True, 0)
+    
+    response = dialog.run()
+    findtext = entry.get_buffer().get_text()
+    dialog.destroy()
+    # Do something
+    if response == gtk.RESPONSE_APPLY:
+      do_find(findtext)
+    else:
+      print 'Canceled the find.'
+
+def view_find_again_cb(action, sourceview):
+    do_find(findtext)
+      
+def do_find(findtext):
+    print 'Trying to find ' + findtext 
+
+    found_anything = False;
+
+    if found_anything == False:
+        error_dialog(None, "Could not find " + findtext)
+    
 ######################################################################
 ##### Buffer action callbacks
 def open_file_cb(action, buffer):
@@ -321,6 +367,8 @@ view_actions = [
     ('Print', gtk.STOCK_PRINT, '_Print', '<control>P', 'Print the file', print_cb),
     ('NewView', gtk.STOCK_NEW, '_New View', None, 'Create a new view of the file', new_view_cb),
     ('HelpAbout', gtk.STOCK_ABOUT, '_About', None, 'Display the About dialog', help_about_cb),
+    ('ViewFind', gtk.STOCK_FIND, '_Find', '<control>F', 'Find dialog', view_find_cb),
+    ('ViewFindAgain', gtk.STOCK_FIND, 'Find A_gain', '<control>G', 'Find last text again', view_find_again_cb),
     ('TabsWidth', None, '_Tabs Width'),
     ('FontSize', None, '_Font Size'),
 ]
@@ -361,6 +409,9 @@ view_ui_description = """
       <menuitem action='Print'/>
     </menu>
     <menu action='ViewMenu'>
+      <separator/>
+      <menuitem action='ViewFind'/>
+      <menuitem action='ViewFindAgain'/>
       <separator/>
       <menuitem action='ShowNumbers'/>
       <menuitem action='ShowMarkers'/>
