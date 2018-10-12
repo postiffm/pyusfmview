@@ -55,12 +55,13 @@
 # To Do
 #   1. Get language configuration right
 #   2. Add file name to title bar
-#   3. Add search capability
+# X 3. Add search capability
 #   4. Contribute usfm.lang to gtksourceview
 #   5. Port to gtksourceview3
 # X 6. Add About dialog
 #   7. Add F3 hotkey for search
-#   8. Add <enter> handler in Find dialog
+# X 8. Add <enter> handler in Find dialog
+#   9. Add capability to jump to next match
 
 import os, os.path
 import sys
@@ -239,6 +240,13 @@ def help_about_cb(action, sourceview):
 
 def view_find_cb(action, sourceview):
     global findtext
+
+    # Remove last search results
+    textbuffer = sourceview.get_buffer();
+    start = textbuffer.get_start_iter()
+    end = textbuffer.get_end_iter()
+    textbuffer.remove_tag(tag_found, start, end)
+    
     # I don't have a gtkWindow to be a parent here...
     dialog = gtk.Dialog("Find Text", None,
                         gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
@@ -252,6 +260,13 @@ def view_find_cb(action, sourceview):
     entry.set_editable(True)
     entry.set_visibility(True)
     entry.show()
+
+    # Next lines make it so that <enter> works in the dialog box
+    entry.set_activates_default(True)
+    okButton = dialog.get_widget_for_response(gtk.RESPONSE_APPLY)
+    okButton.set_can_default(True)
+    okButton.grab_default()
+    
     entry.set_icon_from_icon_name(gtk.ENTRY_ICON_PRIMARY, gtk.STOCK_FIND)
     dialog.vbox.pack_start(entry, True, True, 0)
     
@@ -260,21 +275,40 @@ def view_find_cb(action, sourceview):
     dialog.destroy()
     # Do something
     if response == gtk.RESPONSE_APPLY:
-      do_find(findtext)
+      do_find(findtext, sourceview)
     else:
       print 'Canceled the find.'
 
 def view_find_again_cb(action, sourceview):
-    do_find(findtext)
+    do_find(findtext, sourceview)
       
-def do_find(findtext):
-    print 'Trying to find ' + findtext 
+def do_find(findtext, sourceview):
+    textbuffer = sourceview.get_buffer();
+    numMatched = 0;
 
-    found_anything = False;
+    cursor_mark = textbuffer.get_insert()
+    start = textbuffer.get_iter_at_mark(cursor_mark)
+    if start.get_offset() == textbuffer.get_char_count():
+        start = textbuffer.get_start_iter()
+        # Special case--wrap around to the top
 
-    if found_anything == False:
+    end = textbuffer.get_end_iter()
+    match = start.forward_search(findtext, 0, end)
+    while match is not None:
+        numMatched = numMatched + 1
+        match_start, match_end = match
+        textbuffer.apply_tag(tag_found, match_start, match_end)
+        start = match_end
+        match = start.forward_search(findtext, 0, end)
+        #textbuffer.set_insert(match_end)
+        # How do I set cursor at the first match?
+        #Could do this recursively...search_and_mark(text, match_end)
+
+    if numMatched == 0:
         error_dialog(None, "Could not find " + findtext)
-    
+    else:
+        error_dialog(None, "Found " + str(numMatched) + " matches")
+        
 ######################################################################
 ##### Buffer action callbacks
 def open_file_cb(action, buffer):
@@ -462,6 +496,7 @@ buffer_ui_description = """
 </ui>
 """
 
+tag_found=0;
     
 ######################################################################
 ##### create view window
@@ -478,6 +513,11 @@ def create_view_window(buffer, sourceview=None):
     buffer.connect('changed', update_cursor_position, view)
     view.connect('button-press-event', button_press_cb)
     window.connect('delete-event', window_deleted_cb, view)
+
+    view.set_wrap_mode(gtk.WRAP_WORD)
+    
+    global tag_found
+    tag_found = buffer.create_tag("found", background="yellow")
 
     # action group and UI manager
     action_group = gtk.ActionGroup('ViewActions')
