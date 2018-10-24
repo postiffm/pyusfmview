@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # Thanks to Ben Carnes for this code
+# To make this work on msys2 (Windows) you may need to do
+# pacman -S mingw-w64-x86_64-python2-gobject
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
