@@ -11,7 +11,7 @@ win.show_all()
 
 scrolledwindow = gtk.ScrolledWindow()
 scrolledwindow.set_border_width(10)
-scrolledwindow.set_policy(gtk.POLICY_NEVER, gtk.POLICY_ALWAYS)
+scrolledwindow.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
 win.add(scrolledwindow)
 scrolledwindow.show()
 
