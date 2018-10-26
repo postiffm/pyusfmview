@@ -7,18 +7,17 @@ import gtk
 win = gtk.Window()
 win.connect("destroy", gtk.main_quit)
 win.set_default_size(300, 500)
-win.show_all()
+#win.show_all()
 
 scrolledwindow = gtk.ScrolledWindow()
 scrolledwindow.set_border_width(10)
 scrolledwindow.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
 win.add(scrolledwindow)
-scrolledwindow.show()
+#scrolledwindow.show()
 
 vbox = gtk.VBox()
 scrolledwindow.add_with_viewport(vbox)
-
-vbox.show()
+#vbox.show()
 
 def AddTextView(i):
     global vbox;
@@ -32,4 +31,5 @@ def AddTextView(i):
 
 for i in range(6): AddTextView(i)
 
+win.show_all()
 gtk.main()

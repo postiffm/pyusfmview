@@ -15,12 +15,11 @@ scrolledwindow = Gtk.ScrolledWindow()
 scrolledwindow.set_border_width(10)
 scrolledwindow.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
 win.add(scrolledwindow)
-scrolledwindow.show()
+#scrolledwindow.show()
 
 grid = Gtk.Grid()
 scrolledwindow.add(grid)
-
-grid.show()
+#grid.show()
 
 def AddTextView(i):
     global grid;
@@ -30,8 +29,9 @@ def AddTextView(i):
     textview.set_wrap_mode(Gtk.WrapMode.WORD)
     textview.set_hexpand(True) # This is False by default
     grid.attach(textview, 0, i, 1, 1)
-    textview.show()
+#    textview.show()
 
 for i in range(6): AddTextView(i)
 
+win.show_all()
 Gtk.main()
