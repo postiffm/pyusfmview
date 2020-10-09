@@ -37,8 +37,8 @@ However, the above fails.
 
 A simple example is provided in this repository:
 
-    ./pyusfmview.pl eph.usfm
+    ./pyusfmview.py eph.usfm
 
 And a more complicated example:
 
-    ./pyusfmview.pl rev.usfm
+    ./pyusfmview.py rev.usfm
